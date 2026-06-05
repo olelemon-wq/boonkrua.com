@@ -35,10 +35,10 @@ export default function BoonkruaHistoryPage() {
             <Image
               src="/images/memorial-portrait.png"
               alt="นายบุญเครือ เขมาภิรัตน์"
-              width={160}
-              height={160}
+              width={280}
+              height={190}
               priority
-              className="mx-auto mb-6 size-40 rounded-full border border-border/80 object-cover object-top md:size-[160px]"
+              className="mx-auto mb-6 h-auto w-48 md:w-56"
             />
             <h1 className="text-2xl font-medium leading-snug md:text-3xl">
               ประวัตินายบุญเครือ

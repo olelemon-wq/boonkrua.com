@@ -133,3 +133,17 @@
     @apply min-h-full bg-background font-sans text-foreground;
   }
 }
+
+.mourning-readable-body {
+  font-size: calc(var(--reading-mobile, 1) * 1rem);
+}
+
+.mourning-readable-body * {
+  font-size: inherit !important;
+}
+
+@media (min-width: 768px) {
+  .mourning-readable-body {
+    font-size: calc(var(--reading-desktop, 1.125) * 1rem);
+  }
+}

@@ -48,7 +48,7 @@ export default function TributesSection() {
                 href={tribute.href}
                 className={cn(
                   buttonVariants({ variant: "outline", size: "sm" }),
-                  "h-8 rounded-full border-border/60 bg-muted/30 px-4 text-xs font-normal text-muted-foreground hover:border-primary/30 hover:bg-muted/50 hover:text-primary"
+                  "h-9 rounded-full border-border/60 bg-muted/30 px-5 text-sm font-semibold text-muted-foreground hover:border-primary/30 hover:bg-muted/50 hover:text-primary"
                 )}
               >
                 อ่านต่อ
