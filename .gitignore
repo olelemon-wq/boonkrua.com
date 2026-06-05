@@ -21,7 +21,7 @@
 /build
 
 # large local media (GitHub limit 100MB)
-/public/videos/
+/public/videos/TOM-CHESS-D1.mp4
 
 # misc
 .DS_Store

@@ -61,12 +61,12 @@ export const navMenu: NavMenuGroup[] = [
   {
     label: "ติดต่อแอดมิน",
     items: [
-      { label: "แจกหนังสือสวดมนต์", href: "#contact/prayer-books" },
-      { label: "แจกหนังสือ มหาวิทยาลัยชีวิต", href: "#contact/life-university-books" },
-      { label: "แจกทุนการศึกษา", href: "#contact/scholarship" },
-      { label: "ติดต่อ แอดมิน", href: "#contact/admin" },
-      { label: "QR Code", href: "#contact/qr" },
-      { label: "กำหนดการต่างๆ", href: "#contact/schedule" },
+      { label: "แจกหนังสือสวดมนต์", href: "/contact#prayer-books" },
+      { label: "แจกหนังสือ มหาวิทยาลัยชีวิต", href: "/contact#life-university-books" },
+      { label: "แจกทุนการศึกษา", href: "/contact#scholarship" },
+      { label: "ติดต่อ แอดมิน", href: "/contact#admin" },
+      { label: "QR Code", href: "/contact#qr" },
+      { label: "กำหนดการต่างๆ", href: "/contact#schedule" },
     ],
   },
 ];
