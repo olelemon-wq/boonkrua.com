@@ -41,8 +41,18 @@ export const chessEditions: ChessEdition[] = [
     dateLabel: "28 ก.พ. – 1 มี.ค. 2569",
     venue: "โรงเรียนเทศบาลศรีมหาราชา อ.ศรีราชา จ.ชลบุรี",
     youtubeId: "Lctt5SJVaio",
-    // TODO: เพิ่มภาพบรรยากาศครั้งที่ ๑ ไว้ที่ public/images/chess/edition-1/
-    photos: [],
+    // ภาพจากผู้จัด ย่อเหลือกว้าง 1600px ไว้ที่ public/images/chess/edition-1/
+    photos: [
+      { src: "/images/chess/edition-1/group-all.jpg", alt: "ภาพหมู่ผู้เข้าแข่งขันและผู้จัดงานบุญเครือรำลึก ครั้งที่ ๑", width: 1600, height: 901 },
+      { src: "/images/chess/edition-1/winners-open.jpg", alt: "พิธีมอบรางวัลชนะเลิศและรองชนะเลิศ พร้อมโล่และเงินรางวัล", width: 1600, height: 901 },
+      { src: "/images/chess/edition-1/winners-youth.jpg", alt: "นักหมากรุกเยาวชนรับเหรียญและถ้วยรางวัลบนเวที", width: 1600, height: 901 },
+      { src: "/images/chess/edition-1/group-cheer.jpg", alt: "ผู้เข้าร่วมงานชูมือรวมพลังหน้าเวทีและโต๊ะแข่งขัน", width: 1600, height: 645 },
+      { src: "/images/chess/edition-1/referees.jpg", alt: "คณะกรรมการและทีมงานจัดการแข่งขัน", width: 1600, height: 901 },
+      { src: "/images/chess/edition-1/youth-players.jpg", alt: "นักหมากรุกเยาวชนในเสื้องานบุญเครือรำลึก", width: 1600, height: 901 },
+      { src: "/images/chess/edition-1/players.jpg", alt: "นักหมากรุกผู้เข้าแข่งขันถ่ายภาพหน้าเวที", width: 1600, height: 901 },
+      { src: "/images/chess/edition-1/family.jpg", alt: "ครอบครัวเขมาภิรัตน์ถ่ายภาพหน้าป้ายงาน", width: 1600, height: 1245 },
+      { src: "/images/chess/edition-1/family-guests.jpg", alt: "ครอบครัวและแขกผู้ร่วมงานถ่ายภาพร่วมกัน", width: 1600, height: 901 },
+    ],
   },
 ];
 

@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
@@ -75,10 +76,10 @@ export default function MourningIndexPage() {
                   {fullName ? (
                     <span className="mt-1 text-sm leading-snug font-light text-foreground/75">
                       {fullName.split(" ").map((word, i) => (
-                        <span key={i} className="whitespace-nowrap">
+                        <Fragment key={i}>
                           {i > 0 ? " " : null}
-                          {word}
-                        </span>
+                          <span className="whitespace-nowrap">{word}</span>
+                        </Fragment>
                       ))}
                     </span>
                   ) : null}

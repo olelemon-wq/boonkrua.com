@@ -40,6 +40,7 @@ const edition = chessEditions.find((e) => e.no === 1)!;
 
 const toc = [
   { id: "origin", label: "ที่มาของการแข่งขัน" },
+  { id: "photos", label: "ภาพบรรยากาศ" },
   { id: "venue", label: "สถานที่และกำหนดการ" },
   { id: "format", label: "รูปแบบการแข่งขัน" },
   { id: "rules", label: "กติกาหมากรุกไทย" },
@@ -144,6 +145,12 @@ export default function ChessEdition1Page() {
               ))}
             </div>
           </ChessSection>
+
+          {edition.photos.length > 0 ? (
+            <ChessSection id="photos" title="ภาพบรรยากาศ">
+              <MasonryPhotoGallery images={edition.photos} />
+            </ChessSection>
+          ) : null}
 
           <ChessSection id="venue" title="สถานที่และกำหนดการจัดการแข่งขัน">
             <div className={chessProse}>
@@ -340,11 +347,6 @@ export default function ChessEdition1Page() {
             </dl>
           </ChessSection>
 
-          {edition.photos.length > 0 ? (
-            <ChessSection id="photos" title="ภาพบรรยากาศ">
-              <MasonryPhotoGallery images={edition.photos} />
-            </ChessSection>
-          ) : null}
 
           <section className="mt-16 rounded-2xl bg-card-header/35 px-6 py-10 text-center md:px-12 md:py-12">
             <h2 className="mx-auto mb-5 max-w-xl text-xl leading-snug font-semibold text-balance md:text-2xl">
