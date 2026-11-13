@@ -4,7 +4,7 @@ import { ChevronRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import {
-  MourningFontSizeToolbar,
+  MourningFontSizeButton,
   MourningReadableBody,
   MourningReadingProvider,
 } from "@/components/MourningReadingControls";
@@ -22,17 +22,17 @@ export default function MourningArticleShell({
   return (
     <>
       <Navbar />
-      <main className="mx-auto max-w-3xl px-6 py-12 pb-24 md:py-16 md:pb-28">
+      <main className="mx-auto max-w-3xl px-6 py-10 md:py-16">
         <nav
           aria-label="breadcrumb"
-          className="mb-8 flex flex-wrap items-center gap-1 text-sm text-muted-foreground"
+          className="mb-4 flex flex-wrap items-center gap-1 text-sm text-muted-foreground"
         >
           <Link href="/" className="transition-colors hover:text-primary">
             Home
           </Link>
           <ChevronRight className="size-3.5 shrink-0" />
           <Link
-            href="/#memorials"
+            href="/mourning"
             className="transition-colors hover:text-primary"
           >
             คำไว้อาลัย
@@ -42,6 +42,9 @@ export default function MourningArticleShell({
         </nav>
 
         <MourningReadingProvider>
+          <div className="mb-6 flex justify-end">
+            <MourningFontSizeButton />
+          </div>
           <article>
             <header className="mb-10 text-center">
               {tribute.image ? (
@@ -68,7 +71,6 @@ export default function MourningArticleShell({
 
             <MourningReadableBody>{children}</MourningReadableBody>
           </article>
-          <MourningFontSizeToolbar />
         </MourningReadingProvider>
       </main>
       <Footer />

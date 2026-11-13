@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Sarabun } from "next/font/google";
 import { cn } from "@/lib/utils";
+import BottomTabBar from "@/components/BottomTabBar";
 import "./globals.css";
 
 const sarabun = Sarabun({
@@ -15,6 +16,10 @@ export const metadata: Metadata = {
     "แด่พ่อผู้ล่วงลับ เรื่องราว ความดี และพระคุณจะสถิตอยู่ในใจของพวกเราตลอดไป",
 };
 
+export const viewport: Viewport = {
+  viewportFit: "cover",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -25,7 +30,10 @@ export default function RootLayout({
       lang="th"
       className={cn("h-full", sarabun.variable)}
     >
-      <body className="flex min-h-full flex-col">{children}</body>
+      <body className="flex min-h-full flex-col">
+        {children}
+        <BottomTabBar />
+      </body>
     </html>
   );
 }

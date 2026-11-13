@@ -10,7 +10,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import MobileNav from "@/components/MobileNav";
+import { SoonBadge } from "@/components/SoonBadge";
 import { navMenu } from "@/data/nav-menu";
 
 export default function Navbar() {
@@ -46,12 +46,22 @@ export default function Navbar() {
                     >
                       {group.items.map((item) => (
                         <li key={item.href} className="text-left">
-                          <NavigationMenuLink
-                            render={<Link href={item.href} />}
-                            className="justify-start whitespace-normal py-2.5 text-base lg:text-lg"
-                          >
-                            {item.label}
-                          </NavigationMenuLink>
+                          {item.status === "soon" ? (
+                            <span
+                              aria-disabled="true"
+                              className="flex items-center justify-between gap-3 rounded-lg px-2.5 py-2.5 text-base text-muted-foreground lg:text-lg"
+                            >
+                              {item.label}
+                              <SoonBadge />
+                            </span>
+                          ) : (
+                            <NavigationMenuLink
+                              render={<Link href={item.href} />}
+                              className="justify-start whitespace-normal py-2.5 text-base lg:text-lg"
+                            >
+                              {item.label}
+                            </NavigationMenuLink>
+                          )}
                         </li>
                       ))}
                     </ul>
@@ -61,8 +71,6 @@ export default function Navbar() {
             </NavigationMenuList>
           </NavigationMenu>
         </div>
-
-        <MobileNav />
       </nav>
     </header>
   );
