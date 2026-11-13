@@ -12,6 +12,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import MobileNav from "@/components/MobileNav";
+import BackToTop from "@/components/BackToTop";
 import { cn } from "@/lib/utils";
 
 type Tab = {
@@ -116,6 +117,7 @@ export default function BottomTabBar() {
         </ul>
       </nav>
 
+      <BackToTop />
       <MobileNav open={menuOpen} onOpenChange={setMenuOpen} />
     </>
   );

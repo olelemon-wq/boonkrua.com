@@ -62,53 +62,88 @@ export function ChessSubheading({ children }: { children: React.ReactNode }) {
   );
 }
 
+/**
+ * ตาราง 2 คอลัมน์ของหน้าหมากรุก
+ * - ค่าเริ่มต้น: เป็นแถวจริงทุกขนาดจอ (เหมาะกับคอลัมน์แรกสั้น เช่น เวลา ผลการแข่งขัน)
+ * - stackOnMobile: บนมือถือวางสองคอลัมน์ซ้อนกันเป็นการ์ด (เหมาะกับข้อความยาวทั้งสองฝั่ง)
+ */
 export function ChessTable({
   caption,
   head,
   rows,
   firstColClassName,
+  secondColClassName,
   isMutedRow,
+  stackOnMobile = false,
 }: {
   caption: string;
   head: [string, string];
   rows: [string, string][];
   firstColClassName?: string;
+  secondColClassName?: string;
   isMutedRow?: (row: [string, string]) => boolean;
+  stackOnMobile?: boolean;
 }) {
+  const stack = stackOnMobile;
   return (
-    <div className="overflow-hidden rounded-xl ring-1 ring-border sm:overflow-x-auto">
-      <table className="block w-full border-collapse text-left sm:table">
+    <div className="overflow-hidden rounded-xl bg-background ring-1 ring-border">
+      <table
+        className={cn(
+          "w-full border-collapse text-left text-base",
+          stack && "block sm:table"
+        )}
+      >
         <caption className="sr-only">{caption}</caption>
-        <thead className="sr-only bg-card-header/60 text-sm font-medium sm:not-sr-only sm:table-header-group">
+        <thead
+          className={cn(
+            "bg-card-header/50 text-sm font-medium text-foreground/80",
+            stack && "sr-only sm:not-sr-only sm:table-header-group"
+          )}
+        >
           <tr>
-            <th scope="col" className="px-4 py-3">
+            <th scope="col" className="px-4 py-2.5 font-medium">
               {head[0]}
             </th>
-            <th scope="col" className="px-4 py-3">
+            <th scope="col" className={cn("px-4 py-2.5 font-medium", secondColClassName)}>
               {head[1]}
             </th>
           </tr>
         </thead>
-        <tbody className="block font-light sm:table-row-group">
-          {rows.map(([a, b]) => (
-            <tr
-              key={a + b}
-              className={cn(
-                "block border-border align-top not-first:border-t sm:table-row sm:border-t",
-                isMutedRow?.([a, b]) && "bg-muted text-muted-foreground"
-              )}
-            >
-              <td
+        <tbody className={cn("font-light", stack && "block sm:table-row-group")}>
+          {rows.map(([a, b]) => {
+            const muted = isMutedRow?.([a, b]);
+            return (
+              <tr
+                key={a + b}
                 className={cn(
-                  "block px-4 pt-3 pb-0.5 text-sm font-medium whitespace-nowrap tabular-nums sm:table-cell sm:py-3 sm:text-base sm:font-normal",
-                  firstColClassName
+                  "border-t border-border/80 align-top transition-colors hover:bg-surface/70",
+                  stack && "block first:border-t-0 sm:table-row sm:first:border-t",
+                  muted && "bg-surface text-muted-foreground hover:bg-surface"
                 )}
               >
-                {a}
-              </td>
-              <td className="block px-4 pb-3 sm:table-cell sm:py-3">{b}</td>
-            </tr>
-          ))}
+                <th
+                  scope="row"
+                  className={cn(
+                    "px-4 py-3 text-left font-medium whitespace-nowrap tabular-nums",
+                    stack && "block pb-0.5 sm:table-cell sm:pb-3",
+                    muted && "font-normal",
+                    firstColClassName
+                  )}
+                >
+                  {a}
+                </th>
+                <td
+                  className={cn(
+                    "px-4 py-3",
+                    stack && "block pt-0 sm:table-cell sm:pt-3",
+                    secondColClassName
+                  )}
+                >
+                  {b}
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

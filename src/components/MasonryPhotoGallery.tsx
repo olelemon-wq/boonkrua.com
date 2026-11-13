@@ -1,48 +1,53 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
+import { X } from "lucide-react";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+  type CarouselApi,
+} from "@/components/ui/carousel";
 import type { FamilyGalleryImage } from "@/data/gallery-family";
 
 type MasonryPhotoGalleryProps = {
   images: FamilyGalleryImage[];
 };
 
-export default function MasonryPhotoGallery({
-  images,
-}: MasonryPhotoGalleryProps) {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+const navButtonClass =
+  "size-11 border-0 bg-background/85 text-foreground shadow-md backdrop-blur-sm hover:bg-background disabled:opacity-0 [&_svg]:size-5";
 
-  const close = useCallback(() => setActiveIndex(null), []);
-  const showPrev = useCallback(() => {
-    setActiveIndex((index) =>
-      index === null ? null : (index - 1 + images.length) % images.length
-    );
-  }, [images.length]);
-  const showNext = useCallback(() => {
-    setActiveIndex((index) =>
-      index === null ? null : (index + 1) % images.length
-    );
-  }, [images.length]);
+/** แกลเลอรีภาพ กดที่ภาพแล้วเปิด popup (shadcn Dialog) เลื่อนดูภาพถัดไปได้ด้วย Carousel */
+export default function MasonryPhotoGallery({ images }: MasonryPhotoGalleryProps) {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [current, setCurrent] = useState(0);
+  const [api, setApi] = useState<CarouselApi>();
 
   useEffect(() => {
-    if (activeIndex === null) return;
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") close();
-      if (event.key === "ArrowLeft") showPrev();
-      if (event.key === "ArrowRight") showNext();
-    };
-    document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", onKeyDown);
+    if (!api) return;
+    const onSelect = () => setCurrent(api.selectedScrollSnap());
+    api.on("select", onSelect);
     return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", onKeyDown);
+      api.off("select", onSelect);
     };
-  }, [activeIndex, close, showNext, showPrev]);
+  }, [api]);
 
-  const activeImage = activeIndex !== null ? images[activeIndex] : null;
+  const open = (index: number) => {
+    setCurrent(index);
+    setOpenIndex(index);
+  };
+
+  const activeImage = images[current];
 
   return (
     <>
@@ -51,8 +56,9 @@ export default function MasonryPhotoGallery({
           <button
             key={image.src}
             type="button"
-            onClick={() => setActiveIndex(index)}
-            className="mb-3 block w-full break-inside-avoid md:mb-4 overflow-hidden rounded-lg bg-muted/30 text-left shadow-[0_5px_15px_0_rgba(0,0,0,0.08)] ring-1 ring-border/40 transition-shadow hover:shadow-[0_8px_20px_0_rgba(0,0,0,0.12)] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+            aria-label={`ดูภาพขยาย: ${image.alt}`}
+            onClick={() => open(index)}
+            className="mb-3 block w-full break-inside-avoid overflow-hidden rounded-lg bg-muted/30 text-left shadow-[0_5px_15px_0_rgba(0,0,0,0.08)] ring-1 ring-border/40 transition-shadow hover:shadow-[0_8px_20px_0_rgba(0,0,0,0.12)] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none md:mb-4"
           >
             <Image
               src={image.src}
@@ -66,73 +72,80 @@ export default function MasonryPhotoGallery({
         ))}
       </div>
 
-      {activeImage && activeIndex !== null && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-white/95 p-4 backdrop-blur-sm md:p-8"
-          role="dialog"
-          aria-modal="true"
-          aria-label="ดูภาพขยาย"
-          onClick={close}
+      <Dialog
+        open={openIndex !== null}
+        onOpenChange={(next) => {
+          if (!next) setOpenIndex(null);
+        }}
+      >
+        <DialogContent
+          showCloseButton={false}
+          overlayClassName="bg-black/70 supports-backdrop-filter:backdrop-blur-sm"
+          onKeyDown={(event) => {
+            // Carousel จัดการลูกศรเองเมื่อโฟกัสอยู่ข้างใน
+            if (event.defaultPrevented) return;
+            if (event.key === "ArrowLeft") api?.scrollPrev();
+            if (event.key === "ArrowRight") api?.scrollNext();
+          }}
+          className="max-w-[calc(100%-1.5rem)] gap-0 overflow-hidden rounded-2xl bg-background p-0 sm:max-w-[min(calc(100%-6rem),1100px)]"
         >
-          <Button
-            type="button"
-            variant="outline"
-            size="icon"
-            aria-label="ปิด"
-            onClick={close}
-            className="absolute top-4 right-4 z-10 size-10 rounded-full border-border/60 bg-white/80 text-foreground shadow-sm hover:bg-muted/50"
-          >
-            <X className="size-6" />
-          </Button>
-
-          <Button
-            type="button"
-            variant="outline"
-            size="icon"
-            aria-label="ภาพก่อนหน้า"
-            onClick={(event) => {
-              event.stopPropagation();
-              showPrev();
-            }}
-            className="absolute top-1/2 left-2 z-10 hidden size-11 -translate-y-1/2 rounded-full border-border/60 bg-white/80 text-foreground shadow-sm hover:bg-muted/50 md:flex"
-          >
-            <ChevronLeft className="size-7" />
-          </Button>
-
-          <Button
-            type="button"
-            variant="outline"
-            size="icon"
-            aria-label="ภาพถัดไป"
-            onClick={(event) => {
-              event.stopPropagation();
-              showNext();
-            }}
-            className="absolute top-1/2 right-2 z-10 hidden size-11 -translate-y-1/2 rounded-full border-border/60 bg-white/80 text-foreground shadow-sm hover:bg-muted/50 md:flex"
-          >
-            <ChevronRight className="size-7" />
-          </Button>
-
-          <p className="absolute bottom-4 left-1/2 z-10 -translate-x-1/2 text-sm text-muted-foreground">
-            {activeIndex + 1} / {images.length}
-          </p>
-
-          <div
-            className="relative max-h-[85vh] max-w-[min(100%,1200px)] rounded-lg shadow-[0_5px_30px_rgba(0,0,0,0.12)]"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <Image
-              src={activeImage.src}
-              alt={activeImage.alt}
-              width={activeImage.width}
-              height={activeImage.height}
-              className="max-h-[85vh] w-auto max-w-full object-contain"
-              sizes="100vw"
-              priority
-            />
+          <div className="flex items-center justify-between gap-3 px-4 pt-2 pb-1">
+            <p className="text-sm font-medium tabular-nums text-muted-foreground">
+              {current + 1} / {images.length}
+            </p>
+            <DialogClose
+              aria-label="ปิด"
+              className="-mr-2 flex size-11 items-center justify-center rounded-full text-foreground/70 transition-colors hover:bg-muted active:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+            >
+              <X className="size-6" />
+            </DialogClose>
           </div>
-        </div>
-      )}
+
+          {openIndex !== null ? (
+            <Carousel
+              key={openIndex}
+              setApi={setApi}
+              opts={{ startIndex: openIndex, loop: true }}
+              aria-label="ภาพบรรยากาศ"
+              className="bg-muted/40"
+            >
+              <CarouselContent className="ml-0">
+                {images.map((image, index) => (
+                  <CarouselItem key={image.src} className="pl-0">
+                    <div className="relative aspect-[4/3] max-h-[70dvh] w-full sm:aspect-video">
+                      <Image
+                        src={image.src}
+                        alt={image.alt}
+                        fill
+                        sizes="(max-width: 1100px) 100vw, 1100px"
+                        priority={index === openIndex}
+                        className="object-contain"
+                      />
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious
+                aria-label="ภาพก่อนหน้า"
+                className={`left-2 sm:left-3 ${navButtonClass}`}
+              />
+              <CarouselNext
+                aria-label="ภาพถัดไป"
+                className={`right-2 sm:right-3 ${navButtonClass}`}
+              />
+            </Carousel>
+          ) : null}
+
+          <div className="px-4 pt-3 pb-4">
+            <DialogTitle className="text-base leading-snug font-medium text-pretty">
+              {activeImage?.alt}
+            </DialogTitle>
+            <DialogDescription className="mt-1 text-sm">
+              ปัดซ้าย-ขวา หรือกดลูกศรเพื่อดูภาพอื่น
+            </DialogDescription>
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
