@@ -46,13 +46,13 @@ export default function MasonryPhotoGallery({
 
   return (
     <>
-      <div className="columns-3 gap-4">
+      <div className="columns-2 gap-3 md:columns-3 md:gap-4">
         {images.map((image, index) => (
           <button
             key={image.src}
             type="button"
             onClick={() => setActiveIndex(index)}
-            className="mb-4 block w-full break-inside-avoid overflow-hidden rounded-lg bg-muted/30 text-left shadow-[0_5px_15px_0_rgba(0,0,0,0.08)] ring-1 ring-border/40 transition-shadow hover:shadow-[0_8px_20px_0_rgba(0,0,0,0.12)] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+            className="mb-3 block w-full break-inside-avoid md:mb-4 overflow-hidden rounded-lg bg-muted/30 text-left shadow-[0_5px_15px_0_rgba(0,0,0,0.08)] ring-1 ring-border/40 transition-shadow hover:shadow-[0_8px_20px_0_rgba(0,0,0,0.12)] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
           >
             <Image
               src={image.src}
@@ -60,7 +60,7 @@ export default function MasonryPhotoGallery({
               width={image.width}
               height={image.height}
               className="h-auto w-full"
-              sizes="33vw"
+              sizes="(max-width: 768px) 50vw, 33vw"
             />
           </button>
         ))}
