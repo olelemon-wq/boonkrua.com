@@ -5,6 +5,9 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  /* ความสูง header (sticky) และแถบเมนูล่าง ใช้คำนวณตำแหน่งแถบที่ติดจอ */
+  --header-h: 89px;
+  --tabbar-h: calc(3.75rem + env(safe-area-inset-bottom));
   --muted: oklch(0.97 0 0);
   --accent: #d8d4e8;
   --accent-hover: #7a7494;
@@ -146,4 +149,13 @@
   .mourning-readable-body {
     font-size: calc(var(--reading-desktop, 1.125) * 1rem);
   }
+}
+@media (min-width: 40rem) {
+  :root { --header-h: 105px; }
+}
+@media (min-width: 48rem) {
+  :root { --header-h: 121px; }
+}
+@media (min-width: 64rem) {
+  :root { --header-h: 137px; --tabbar-h: 0px; }
 }
