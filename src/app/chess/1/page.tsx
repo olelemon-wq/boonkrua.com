@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowDown, ArrowRight, CalendarDays, ChevronDown, MapPin } from "lucide-react";
+import { ArrowRight, CalendarDays, ChevronDown, MapPin } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import YouTubeEmbed from "@/components/YouTubeEmbed";
@@ -28,7 +28,12 @@ import {
   currentChessEdition,
 } from "@/data/chess";
 import { chessRulePages } from "@/data/chess-rules";
-import { ChessSectionChips } from "@/components/chess/ChessMobileChrome";
+import {
+  ChessReadingBoard,
+  ChessSectionChips,
+} from "@/components/chess/ChessMobileChrome";
+import ChessBoardToc from "@/components/chess/ChessBoardToc";
+import PieceMoves from "@/components/chess/PieceMoves";
 
 export const metadata = {
   title: "การแข่งขันหมากรุกไทย “บุญเครือรำลึก” ครั้งที่ ๑ (2569) — Boonkrua",
@@ -112,29 +117,9 @@ export default function ChessEdition1Page() {
 
           <div className="mt-8 md:hidden" />
           <ChessSectionChips items={toc} />
+          <ChessReadingBoard items={toc} />
 
-          <nav
-            aria-label="สารบัญ"
-            className="mt-12 hidden rounded-2xl md:block bg-surface px-5 py-6 md:px-8"
-          >
-            <h2 className="mb-3 text-base font-semibold">ในหน้านี้</h2>
-            <ol className="grid gap-x-8 sm:grid-cols-2">
-              {toc.map((item) => (
-                <li key={item.id} className="border-b border-border/80 last:border-b-0">
-                  <a
-                    href={`#${item.id}`}
-                    className="group flex items-center justify-between gap-3 rounded-sm py-2.5 text-base font-light text-foreground/85 transition-colors hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
-                  >
-                    {item.label}
-                    <ArrowDown
-                      aria-hidden
-                      className="size-4 shrink-0 text-primary opacity-40 transition-all group-hover:translate-y-0.5 group-hover:opacity-100"
-                    />
-                  </a>
-                </li>
-              ))}
-            </ol>
-          </nav>
+          <ChessBoardToc items={toc} />
 
           <ChessSection id="origin" title="ที่มาของการแข่งขัน" className="border-t-0 pt-0 md:pt-0">
             <div className={chessProse}>
@@ -196,6 +181,7 @@ export default function ChessEdition1Page() {
                 caption="คะแนนรอบคัดเลือก"
                 head={["ผลการแข่งขัน", "คะแนน"]}
                 rows={chessScoring.map((r) => [r.result, r.points])}
+                secondColClassName="text-right tabular-nums font-normal"
               />
             </div>
             <div className={chessProse}>
@@ -225,17 +211,35 @@ export default function ChessEdition1Page() {
             </div>
 
             <ChessSubheading>วิธีการเดินหมาก</ChessSubheading>
-            <dl className="divide-y divide-border rounded-xl ring-1 ring-border">
+            <dl className="divide-y divide-border overflow-hidden rounded-xl bg-background ring-1 ring-border">
               {chessMoves.map((m) => (
                 <div
                   key={m.piece}
-                  className="grid gap-1 px-4 py-3 sm:grid-cols-[8rem_minmax(0,1fr)] sm:gap-4"
+                  className="flex items-start gap-4 px-4 py-4 sm:items-center sm:gap-5 sm:px-5"
                 >
-                  <dt className="font-medium">{m.piece}</dt>
-                  <dd className="font-light text-foreground/90">{m.rule}</dd>
+                  <PieceMoves kind={m.kind} />
+                  <div className="min-w-0 flex-1 sm:grid sm:grid-cols-[7.5rem_minmax(0,1fr)] sm:items-baseline sm:gap-4">
+                    <dt className="text-[1.0625rem] leading-snug font-semibold">{m.piece}</dt>
+                    <dd className="mt-1 text-[0.9375rem] leading-relaxed font-light text-pretty text-foreground/80 sm:mt-0 sm:text-base">
+                      {m.rule}
+                    </dd>
+                  </div>
                 </div>
               ))}
             </dl>
+            <p
+              aria-hidden
+              className="mt-2.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground"
+            >
+              <span className="inline-flex items-center gap-1.5">
+                <span className="size-[7px] rounded-full bg-primary" />
+                ช่องที่เดินได้
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <span className="size-[7px] rounded-full ring-[1.5px] ring-primary" />
+                ช่องที่กินได้ (เบี้ย)
+              </span>
+            </p>
             <p className="mt-3 text-sm font-light text-foreground/75 md:text-base">
               การเดินหมากประเภทอื่นให้เป็นไปตามกติกาหมากรุกไทยและข้อกำหนดของคณะกรรมการ
             </p>
@@ -280,7 +284,8 @@ export default function ChessEdition1Page() {
               caption="บทลงโทษเมื่อกระทำผิดกติกา"
               head={["การกระทำผิด", "บทลงโทษ"]}
               rows={chessPenalties.map((r) => [r.offence, r.penalty])}
-              firstColClassName="whitespace-normal font-medium"
+              firstColClassName="whitespace-normal sm:w-2/5"
+              stackOnMobile
             />
           </ChessSection>
 
@@ -289,6 +294,7 @@ export default function ChessEdition1Page() {
             <ChessTable
               caption="กำหนดการวันแรก"
               head={["เวลา (น.)", "กิจกรรม"]}
+              firstColClassName="w-0 pr-2 text-sm sm:pr-4 sm:text-base"
               rows={chessScheduleDay1.map((r) => [r.time, r.activity])}
               isMutedRow={([, activity]) => activity.startsWith("พัก")}
             />
@@ -296,6 +302,7 @@ export default function ChessEdition1Page() {
             <ChessTable
               caption="กำหนดการวันที่สอง"
               head={["เวลา (น.)", "กิจกรรม"]}
+              firstColClassName="w-0 pr-2 text-sm sm:pr-4 sm:text-base"
               rows={chessScheduleDay2.map((r) => [r.time, r.activity])}
               isMutedRow={([, activity]) => activity.startsWith("พัก")}
             />

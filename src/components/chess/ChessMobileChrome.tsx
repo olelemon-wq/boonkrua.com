@@ -1,8 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { MessageCircle, Phone } from "lucide-react";
 import { chessContact } from "@/data/chess";
+import { squareFor } from "@/data/chess-board";
+import { useReadingPosition } from "@/lib/reading-position";
+import MiniBoard from "@/components/chess/MiniBoard";
+import { useActiveSection } from "@/components/chess/useActiveSection";
 import { cn } from "@/lib/utils";
 
 type SectionItem = { id: string; label: string };
@@ -12,27 +16,11 @@ type SectionItem = { id: string; label: string };
  * และไฮไลต์หัวข้อที่กำลังอ่านอยู่ (ซ่อนตั้งแต่ md ขึ้นไป ที่มีสารบัญเต็มแทน)
  */
 export function ChessSectionChips({ items }: { items: SectionItem[] }) {
-  const [active, setActive] = useState<string | null>(null);
+  const active = useActiveSection(
+    items.map((item) => item.id),
+    { share: true },
+  );
   const scrollerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const sections = items
-      .map((item) => document.getElementById(item.id))
-      .filter((el): el is HTMLElement => el !== null);
-    if (sections.length === 0) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-        if (visible[0]) setActive(visible[0].target.id);
-      },
-      { rootMargin: "-160px 0px -55% 0px" },
-    );
-    sections.forEach((s) => observer.observe(s));
-    return () => observer.disconnect();
-  }, [items]);
 
   useEffect(() => {
     const scroller = scrollerRef.current;
@@ -74,6 +62,31 @@ export function ChessSectionChips({ items }: { items: SectionItem[] }) {
         })}
       </div>
     </nav>
+  );
+}
+
+/**
+ * กระดานเดินตามการอ่าน (มือถือ): ม้าจะกระโดดไปช่องของหัวข้อที่กำลังอ่านอยู่
+ * อ่านตำแหน่งจากแถบหัวข้อ (ChessSectionChips) ผ่าน reading-position
+ */
+export function ChessReadingBoard({ items }: { items: SectionItem[] }) {
+  const position = useReadingPosition() ?? 0;
+  const stops = items.map((_, i) => squareFor(i));
+  const current = items[position];
+
+  return (
+    <div className="mb-2 flex items-center gap-5 rounded-2xl bg-surface p-4 md:hidden">
+      <MiniBoard stops={stops} active={position} square={17} numbers />
+      <div aria-live="polite" className="min-w-0">
+        <p className="text-sm text-muted-foreground">กำลังอ่าน</p>
+        <p className="mt-0.5 text-lg leading-snug font-semibold text-balance">
+          {current?.label}
+        </p>
+        <p className="mt-2 text-sm leading-snug text-foreground/70">
+          เลื่อนอ่านต่อ แล้วม้าจะเดินตามหัวข้อ
+        </p>
+      </div>
+    </div>
   );
 }
 
