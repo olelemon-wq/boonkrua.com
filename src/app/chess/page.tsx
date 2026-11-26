@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, MessageCircle, Phone } from "lucide-react";
+import { ArrowRight, MessageCircle } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import YouTubeEmbed from "@/components/YouTubeEmbed";
@@ -75,9 +75,19 @@ export default function ChessHubPage() {
                 ครั้งที่ {current.noThai}
               </h2>
               {current.dateLabel || current.venue ? (
-                <p className="mt-3 text-lg font-medium text-foreground/90">
-                  {[current.dateLabel, current.venue].filter(Boolean).join(" · ")}
-                </p>
+                <div className="mt-3 space-y-1">
+                  <p className="text-lg font-medium text-foreground/90">
+                    {[current.dateLabel, current.venue].filter(Boolean).join(" · ")}
+                  </p>
+                  {current.prize ? (
+                    <p className="text-base text-foreground/80">
+                      รางวัลรวมมูลค่า{" "}
+                      <span className="font-semibold text-foreground tabular-nums">
+                        {current.prize}
+                      </span>
+                    </p>
+                  ) : null}
+                </div>
               ) : (
                 <p className="mt-4 max-w-xl text-base leading-relaxed font-light text-foreground/85 md:text-lg">
                   {`คณะผู้จัดกำลังเตรียมการแข่งขันครั้งที่ ${current.noThai} วันแข่งขัน สถานที่ และการเปิดรับสมัครจะประกาศเร็ว ๆ นี้ ติดตามข่าวได้ทาง LINE หรือ Facebook “${chessContact.facebookName}”`}
@@ -96,23 +106,14 @@ export default function ChessHubPage() {
                 )}
               >
                 <MessageCircle className="size-4" />
-                ติดตามข่าวทาง LINE
-              </a>
-              <a
-                href={chessContact.phoneHref}
-                className={cn(
-                  buttonVariants({ variant: "outline", size: "lg" }),
-                  "h-11 gap-2 rounded-full px-5 text-base tabular-nums"
-                )}
-              >
-                <Phone className="size-4" />
-                โทร {chessContact.phoneDisplay}
+                กติกาและสมัครทาง LINE
               </a>
             </div>
           </div>
 
           <p className="mt-8 border-t border-border pt-6 text-sm leading-relaxed text-foreground/75 md:text-base">
-            ระหว่างรอประกาศ ดูรูปแบบการแข่งขัน กติกา และกำหนดการของครั้งที่ ๑ เพื่อเตรียมตัวได้ที่{" "}
+            รายละเอียด กติกา และคุณสมบัติของครั้งที่ {current.noThai} แจ้งทาง LINE
+            ระหว่างนี้ดูรูปแบบการแข่งขันและกำหนดการของครั้งที่ ๑ เพื่อเตรียมตัวได้ที่{" "}
             <Link
               href="/chess/1#rules"
               className="font-medium text-foreground underline decoration-primary/60 underline-offset-4 transition-colors hover:text-primary"

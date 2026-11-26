@@ -1,13 +1,7 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import YouTubeEmbed from "@/components/YouTubeEmbed";
-import { buttonVariants } from "@/components/ui/button";
-import {
-  chessStatusLabel,
-  currentChessEdition,
-  pastChessEditions,
-} from "@/data/chess";
-import { cn } from "@/lib/utils";
+import ChessPromoCard from "@/components/chess/ChessPromoCard";
+import { currentChessEdition, pastChessEditions } from "@/data/chess";
 
 export default function ActivitiesSection() {
   const current = currentChessEdition;
@@ -15,30 +9,24 @@ export default function ActivitiesSection() {
 
   return (
     <section id="activities" className="mx-auto max-w-6xl px-6 py-20">
-      <div className="mb-10 text-center">
-        <h2 className="text-xl leading-snug font-semibold text-balance md:text-2xl">
-          กิจกรรมดีๆ การแข่งขัน<span className="whitespace-nowrap">หมากรุก</span>{" "}
-          <span className="whitespace-nowrap">บุญเครือรำลึก</span>{" "}
-          <span className="whitespace-nowrap">ครั้งที่ {current.noThai}</span>
-        </h2>
-        <p className="mt-3 text-base font-light text-foreground/80 md:text-lg">
-          {chessStatusLabel[current.status]}
-          {current.dateLabel ? ` · ${current.dateLabel}` : " · ประกาศรายละเอียดเร็ว ๆ นี้"}
-        </p>
-        <Link
-          href="/chess"
-          className={cn(
-            buttonVariants({ size: "lg" }),
-            "mt-6 h-11 gap-2 rounded-full px-6 text-base"
-          )}
-        >
-          ดูรายละเอียดการแข่งขัน
-          <ArrowRight className="size-4" />
-        </Link>
+      <h2 className="mb-8 text-center text-xl leading-snug font-semibold md:mb-10 md:text-2xl">
+        กิจกรรมดีๆ
+      </h2>
+
+      <div className="mx-auto max-w-4xl">
+        <ChessPromoCard
+          edition={current}
+          variant="section"
+          title={
+            <h3 className="text-2xl leading-snug font-semibold text-balance md:text-[1.75rem]">
+              บุญเครือรำลึก
+            </h3>
+          }
+        />
       </div>
 
       {lastEdition?.youtubeId ? (
-        <figure>
+        <figure className="mx-auto mt-14 max-w-4xl md:mt-16">
           <YouTubeEmbed
             youtubeId={lastEdition.youtubeId}
             title={`บรรยากาศการแข่งขันหมากรุกบุญเครือรำลึก ครั้งที่ ${lastEdition.noThai}`}

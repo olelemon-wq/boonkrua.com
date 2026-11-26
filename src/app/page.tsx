@@ -4,6 +4,7 @@ import ActivitiesSection from "@/components/ActivitiesSection";
 import BooksSection from "@/components/BooksSection";
 import TributesSection from "@/components/TributesSection";
 import Footer from "@/components/Footer";
+import ChessPromoPopup from "@/components/chess/ChessPromoPopup";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
         <TributesSection />
       </main>
       <Footer />
+      <ChessPromoPopup />
     </>
   );
 }

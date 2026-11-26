@@ -337,16 +337,7 @@ export default function ChessEdition1Page() {
                   rel="noopener noreferrer"
                   className="underline decoration-primary/60 underline-offset-4 hover:text-primary"
                 >
-                  {chessContact.lineId}
-                </a>
-              </dd>
-              <dt className="font-medium text-foreground">โทรศัพท์</dt>
-              <dd>
-                <a
-                  href={chessContact.phoneHref}
-                  className="tabular-nums underline decoration-primary/60 underline-offset-4 hover:text-primary"
-                >
-                  {chessContact.phoneDisplay}
+                  {chessContact.lineLabel}
                 </a>
               </dd>
               <dt className="font-medium text-foreground">Facebook</dt>
