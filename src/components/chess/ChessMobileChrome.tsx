@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { MessageCircle, Phone } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import { chessContact } from "@/data/chess";
 import { squareFor } from "@/data/chess-board";
 import { useReadingPosition } from "@/lib/reading-position";
@@ -100,7 +100,7 @@ export function ChessMobileActionBar() {
         className="h-16 md:hidden"
       />
       <div className="fixed inset-x-0 bottom-(--tabbar-h) z-30 border-t border-border bg-background/95 backdrop-blur-md md:hidden">
-        <div className="mx-auto grid max-w-lg grid-cols-2 gap-3 px-4 py-2">
+        <div className="mx-auto max-w-lg px-4 py-2">
           <a
             href={chessContact.lineHref}
             target="_blank"
@@ -108,14 +108,7 @@ export function ChessMobileActionBar() {
             className="flex h-11 items-center justify-center gap-2 rounded-full bg-primary text-base font-medium text-primary-foreground transition-colors active:bg-accent-hover focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
           >
             <MessageCircle className="size-5" />
-            LINE
-          </a>
-          <a
-            href={chessContact.phoneHref}
-            className="flex h-11 items-center justify-center gap-2 rounded-full bg-background text-base font-medium ring-1 ring-border transition-colors active:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
-          >
-            <Phone className="size-5" />
-            โทรสอบถาม
+            ดูกติกาและสมัครทาง LINE
           </a>
         </div>
       </div>

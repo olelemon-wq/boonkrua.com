@@ -1,15 +1,15 @@
 import type { FamilyGalleryImage } from "@/data/gallery-family";
 
-/** ช่องทางติดต่อผู้จัด (จากสไลด์กติกาครั้งที่ ๑ หน้า 12) */
+/** ช่องทางติดต่อผู้จัด: ตอนนี้ใช้ LINE จาก QR ในโปสเตอร์ครั้งที่ ๒ */
 export const chessContact = {
-  phoneDisplay: "080-239-9353",
-  phoneHref: "tel:+66802399353",
-  lineId: "@boonkruarumluek",
-  lineHref: "https://line.me/R/ti/p/@boonkruarumluek",
+  /** ข้อความที่แสดงบนลิงก์ LINE */
+  lineLabel: "เพิ่มเพื่อน LINE บุญเครือรำลึก",
+  /** ลิงก์จาก QR code ในโปสเตอร์ครั้งที่ ๒ */
+  lineHref: "https://lin.ee/Fwakum1",
   facebookName: "บุญเครือรำลึก",
 };
 
-export type ChessEditionStatus = "upcoming" | "open" | "past";
+export type ChessEditionStatus = "upcoming" | "announced" | "open" | "past";
 
 export type ChessEdition = {
   no: number;
@@ -20,6 +20,10 @@ export type ChessEdition = {
   /** ข้อความวันที่ที่แสดงผล ปล่อยว่างถ้ายังไม่ประกาศ */
   dateLabel?: string;
   venue?: string;
+  /** เงินรางวัลรวม เช่น "50,000 บาท" */
+  prize?: string;
+  /** โปสเตอร์ทางการ (ถ้ามี) */
+  poster?: { src: string; width: number; height: number; alt: string };
   youtubeId?: string;
   photos: FamilyGalleryImage[];
 };
@@ -29,8 +33,12 @@ export const chessEditions: ChessEdition[] = [
     no: 2,
     noThai: "๒",
     href: "/chess",
-    status: "upcoming",
-    // TODO: เติมวันที่ สถานที่ และเปลี่ยน status เป็น "open" เมื่อเปิดรับสมัคร
+    status: "announced",
+    // จากโปสเตอร์ครั้งที่ ๒ (รายละเอียด กติกา และคุณสมบัติ แจ้งทาง LINE)
+    dateLabel: "27–28 ก.พ. 2570",
+    venue: "โรงเรียนเทศบาลบ้านศรีมหาราชา อ.ศรีราชา จ.ชลบุรี",
+    prize: "50,000 บาท",
+    poster: { src: "/images/chess/edition-2/poster.jpg", width: 1055, height: 1491, alt: "โปสเตอร์การแข่งขันหมากรุกไทย บุญเครือรำลึก ครั้งที่ ๒" },
     photos: [],
   },
   {
@@ -61,6 +69,7 @@ export const pastChessEditions = chessEditions.filter((e) => e.status === "past"
 
 export const chessStatusLabel: Record<ChessEditionStatus, string> = {
   upcoming: "กำลังเตรียมการ",
+  announced: "ประกาศวันแข่งขันแล้ว",
   open: "เปิดรับสมัคร",
   past: "จัดไปแล้ว",
 };

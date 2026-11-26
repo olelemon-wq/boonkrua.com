@@ -26,7 +26,7 @@ export default function BackToTop() {
     return () => window.removeEventListener("scroll", onScroll);
   }, [pathname]);
 
-  // หน้า /chess มีแถบปุ่ม LINE/โทร อยู่เหนือแถบเมนูล่าง จึงยกปุ่มขึ้นอีกชั้น
+  // หน้า /chess มีแถบปุ่ม LINE อยู่เหนือแถบเมนูล่าง จึงยกปุ่มขึ้นอีกชั้น
   const raised = pathname === "/chess";
   const withBoard = position !== null;
   const stops = Array.from({ length: 10 }, (_, i) => squareFor(i));
